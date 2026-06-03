@@ -13,9 +13,9 @@
 
 
 #DAY2
-# investment= float(input("Enter your investment amount:"))
-# profit= investment*0.12
-# print("Expected profit:",profit)
+investment= float(input("Enter your investment amount:"))
+profit= investment*0.12
+print("Expected profit:",profit)
 
 # task1
 # User se:
@@ -24,16 +24,16 @@
 # input lo.
 
 
-# import pandas as pd
-# stock_name= input("Enter your favorite stock name: ")
-# stock_price= float(input("Enter stock price: "))
+import pandas as pd
+stock_name= input("Enter your favorite stock name: ")
+stock_price= float(input("Enter stock price: "))
 
-# stock_data={
-#     "stock": [stock_name],
-#     "price": [stock_price]
-# }
-# df = pd.DataFrame(stock_data)
-# print(df)
+stock_data={
+    "stock": [stock_name],
+    "price": [stock_price]
+}
+df = pd.DataFrame(stock_data)
+print(df)
 
 # Task 2
 # User se:
@@ -45,3 +45,31 @@ investment = float(input("enter investment amount : "))
 stock_return = investment * 0.15
 print("return :",stock_return)
 print("Total Value :", investment + stock_return)
+
+# task3
+portfolio=["Apple","Tesla","Bitcoin"]
+print("portfolio Assets", portfolio)
+
+print("total assets",len(portfolio))
+
+portfolio.append("Gold")
+print("updated portfolio:",portfolio)
+
+# day3
+portfolio = ["Apple", "Tesla", "Bitcoin", "Gold"]
+portfolio.append("NVIDIA")
+for asset in portfolio:
+    print("asset:",asset)
+
+# task
+
+def calculate_profit(investment, return_percentage):
+    profit = investment * (return_percentage / 100)
+    return profit
+
+
+result = calculate_profit(5000, 12)
+
+print("Expected Profit:", result)
+
+
