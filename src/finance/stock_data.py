@@ -44,3 +44,10 @@ print("expected Return:", result,"%")
 # # day5
 # latest_open = data["Open"].dropna().iloc[-1]
 # print("Latest Open Price:", latest_open)
+rounded_open = round(latest_open, 2)
+rounded_close = round(latest_close, 2)
+rounded_return = round(result, 2)
+
+print("Rounded Open Price:", rounded_open)
+print("Rounded Close Price:", rounded_close)
+print("Expected Return:", rounded_return, "%")
