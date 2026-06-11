@@ -1,8 +1,10 @@
 import yfinance as yf
 
-apple = yf.Ticker("AAPL")
+# apple = yf.Ticker("AAPL")
+ticker_symbol = input("Enter Stock Ticker: ")
+stock = yf.Ticker(ticker_symbol)
 
-data = apple.history(period="5d")
+data = stock.history(period="5d")
  
 print(data)
 
