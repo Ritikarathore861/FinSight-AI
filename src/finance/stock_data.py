@@ -19,8 +19,8 @@ print(data)
 latest_close = data["Close"].dropna().iloc[-1]
 latest_open = data["Open"].dropna().iloc[-1]
 
-print("Latest Close Price:", latest_close)
-print("Latest Open Price:", latest_open)
+# print("Latest Close Price:", latest_close)
+# print("Latest Open Price:", latest_open)
 
 
 def calculate_return(open_price , close_price):
@@ -28,7 +28,7 @@ def calculate_return(open_price , close_price):
     return return_percentage
 # result = calculate_return(200,220)
 result = calculate_return(latest_open, latest_close)
-print("expected Return:", result,"%")
+# print("expected Return:", result,"%")
 
 # =========================
 # DAY 4
@@ -50,6 +50,28 @@ rounded_open = round(latest_open, 2)
 rounded_close = round(latest_close, 2)
 rounded_return = round(result, 2)
 
+
+
+
+print("Stock:", ticker_symbol)
 print("Rounded Open Price:", rounded_open)
 print("Rounded Close Price:", rounded_close)
 print("Expected Return:", rounded_return, "%")
+
+if rounded_return > 0:
+    print("📈 Stock went up")
+else:
+    print("📉 Stock went down")
+
+
+
+
+highest_close = data["Close"].max()
+lowest_close = data["Close"].min()
+
+
+highest_close_rounded = round(highest_close, 2)
+lowest_close_rounded = round(lowest_close, 2)
+
+print("Highest Close Price:", highest_close_rounded)
+print("Lowest Close Price:", lowest_close_rounded)
