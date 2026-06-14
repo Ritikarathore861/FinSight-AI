@@ -2,10 +2,12 @@ import yfinance as yf
 
 # apple = yf.Ticker("AAPL")
 ticker_symbol = input("Enter Stock Ticker: ")
+investment = float(input("Enter Investment Amount: ₹"))
 stock = yf.Ticker(ticker_symbol)
+# print("Investment Amount:", investment)
 
 data = stock.history(period="5d")
- 
+print("\n========== FinSight AI ==========\n")
 print(data)
 
 # print(type(data))
@@ -51,7 +53,7 @@ rounded_close = round(latest_close, 2)
 rounded_return = round(result, 2)
 
 
-
+print("----- Stock Analysis -----")
 
 print("Stock:", ticker_symbol)
 print("Rounded Open Price:", rounded_open)
@@ -75,3 +77,43 @@ lowest_close_rounded = round(lowest_close, 2)
 
 print("Highest Close Price:", highest_close_rounded)
 print("Lowest Close Price:", lowest_close_rounded)
+
+
+average_close = data["Close"].mean()
+average_close_rounded = round(average_close, 2)
+print("Average Close Price:", average_close_rounded)
+
+
+profit = investment * rounded_return / 100
+profit_rounded = round(profit, 2)
+# print("Profit/Loss: ₹", profit_rounded)
+
+print("\n----- Investment Summary -----")
+print("Investment Amount: ₹", investment)
+print("Profit/Loss: ₹", profit_rounded)
+
+final_value = investment + profit_rounded
+final_value_rounded = round(final_value, 2)
+print("Final Value: ₹", final_value_rounded)
+
+
+if rounded_return > 5:
+    print("🚀 Performance: Excellent")
+
+elif rounded_return > 0:
+    print("📈 Performance: Good")
+
+elif rounded_return == 0:
+    print("➖ Performance: Neutral")
+
+else:
+    print("📉 Performance: Poor")
+
+if rounded_return > 5:
+    print("🚀 Suggestion: BUY")
+
+elif rounded_return > 0:
+    print("👍 Suggestion: HOLD")
+
+else:
+    print("⚠️ Suggestion: SELL")
