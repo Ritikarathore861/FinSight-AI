@@ -1,7 +1,11 @@
 import yfinance as yf
+import pandas as pd
+import matplotlib.pyplot as plt
 
 # apple = yf.Ticker("AAPL")
 ticker_symbol = input("Enter Stock Ticker: ")
+
+
 investment = float(input("Enter Investment Amount: ₹"))
 stock = yf.Ticker(ticker_symbol)
 # print("Investment Amount:", investment)
@@ -117,3 +121,63 @@ elif rounded_return > 0:
 
 else:
     print("⚠️ Suggestion: SELL")
+
+
+print("\n----- Stock Comparison -----")
+
+stock1 = input("Enter First Stock: ").upper()
+stock2 = input("Enter Second Stock: ").upper()
+
+data1 = yf.Ticker(stock1).history(period="5d")
+data2 = yf.Ticker(stock2).history(period="5d")
+
+close1 = data1["Close"].dropna().iloc[-1]
+close2 = data2["Close"].dropna().iloc[-1]
+
+print(stock1, "Latest Close:", round(close1, 2))
+print(stock2, "Latest Close:", round(close2, 2))
+
+
+open1 = data1["Open"].dropna().iloc[-1]
+open2 = data2["Open"].dropna().iloc[-1]
+
+return1 = ((close1 - open1) / open1) * 100
+return2 = ((close2 - open2) / open2) * 100
+
+return1 = round(return1, 2)
+return2 = round(return2, 2)
+
+print(stock1, "Return:", return1, "%")
+print(stock2, "Return:", return2, "%")
+
+if return1 > return2:
+    print("🏆 Better Performing Stock:", stock1)
+
+elif return2 > return1:
+    print("🏆 Better Performing Stock:", stock2)
+
+else:
+    print("🤝 Both Stocks Performed Equally")   
+
+report_data = {
+    "Stock": [stock1, stock2],
+    "Return": [return1, return2]
+}
+
+report_df = pd.DataFrame(report_data)
+
+report_df.to_csv("stock_report.csv", index=False)
+
+print(" Report saved as stock_report.csv")
+
+
+# Stock Price Chart
+# Visualizing Closing Prices
+
+plt.plot(data.index, data["Close"])
+
+plt.title(f"{ticker_symbol} Stock Price")
+plt.xlabel("Date")
+plt.ylabel("Close Price")
+
+plt.show()
