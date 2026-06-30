@@ -10,7 +10,7 @@ investment = float(input("Enter Investment Amount: ₹"))
 stock = yf.Ticker(ticker_symbol)
 # print("Investment Amount:", investment)
 
-data = stock.history(period="5d")
+data = stock.history(period="3mo")
 print("\n========== FinSight AI ==========\n")
 print(data)
 
@@ -131,6 +131,10 @@ stock2 = input("Enter Second Stock: ").upper()
 data1 = yf.Ticker(stock1).history(period="5d")
 data2 = yf.Ticker(stock2).history(period="5d")
 
+if data1.empty or data2.empty:
+    print("❌ Invalid stock ticker entered.")
+    exit()
+
 close1 = data1["Close"].dropna().iloc[-1]
 close2 = data2["Close"].dropna().iloc[-1]
 
@@ -174,10 +178,216 @@ print(" Report saved as stock_report.csv")
 # Stock Price Chart
 # Visualizing Closing Prices
 
-plt.plot(data.index, data["Close"])
+# plt.plot(data.index, data["Close"])
+
+# plt.title(f"{ticker_symbol} Stock Price")
+# plt.xlabel("Date")
+# plt.ylabel("Close Price")
+
+# plt.savefig("stock_chart.png")
+# plt.show()
+
+
+# Improve the Stock Chart
+plt.figure(figsize=(10, 5))
+
+plt.plot(
+    data.index,
+    data["Close"],
+    marker="o",
+    linestyle="-"
+)
 
 plt.title(f"{ticker_symbol} Stock Price")
 plt.xlabel("Date")
 plt.ylabel("Close Price")
 
+plt.grid(True)
+
+plt.savefig("stock_chart.png")
+print("📊 Chart saved as stock_chart.png")
+
 plt.show()
+
+# Day 23: Compare Two Stocks on the Same Graph
+stock1_data = yf.Ticker(stock1).history(period="5d")
+stock2_data = yf.Ticker(stock2).history(period="5d")
+
+
+plt.figure(figsize=(10, 5))
+
+plt.plot(
+    stock1_data.index,
+    stock1_data["Close"],
+    marker="o",
+    label=stock1
+)
+
+plt.plot(
+    stock2_data.index,
+    stock2_data["Close"],
+    marker="o",
+    label=stock2
+)
+
+plt.title(f"{stock1} vs {stock2}")
+plt.xlabel("Date")
+plt.ylabel("Close Price")
+plt.grid(True)
+plt.legend()
+
+plt.savefig("comparison_chart.png")
+print("📊 Comparison chart saved as comparison_chart.png")
+
+plt.show()
+
+# Add Moving Average
+
+
+data["MA5"] = data["Close"].rolling(window=5).mean()
+plt.figure(figsize=(10, 5))
+
+plt.plot(
+    data.index,
+    data["Close"],
+    marker="o",
+    label="Close Price"
+)
+
+plt.plot(
+    data.index,
+    data["MA5"],
+    marker="o",
+    label="5-Day Moving Average"
+)
+
+plt.title(f"{ticker_symbol} Stock Price with Moving Average")
+plt.xlabel("Date")
+plt.ylabel("Price")
+plt.grid(True)
+plt.legend()
+
+plt.savefig("moving_average_chart.png")
+print("📊 Moving Average chart saved as moving_average_chart.png")
+
+plt.show()
+
+
+# Day 25: Add 10-Day Moving Average
+data["MA10"] = data["Close"].rolling(window=10).mean()
+
+plt.figure(figsize=(10, 5))
+
+plt.plot(
+    data.index,
+    data["Close"],
+    marker="o",
+    label="Close Price"
+)
+
+plt.plot(
+    data.index,
+    data["MA5"],
+    label="5-Day MA"
+)
+
+plt.plot(
+    data.index,
+    data["MA10"],
+    label="10-Day MA"
+)
+
+plt.title(f"{ticker_symbol} Stock Price Analysis")
+plt.xlabel("Date")
+plt.ylabel("Price")
+plt.grid(True)
+plt.legend()
+
+plt.savefig("technical_analysis_chart.png")
+print("📊 Technical analysis chart saved as technical_analysis_chart.png")
+
+plt.show()
+
+
+
+# Day 26: Add Volatility Analysis
+
+data["Daily Return"] = data["Close"].pct_change()
+
+volatility = data["Daily Return"].std() * 100
+volatility_rounded = round(volatility, 2)
+
+print("Stock Volatility:", volatility_rounded, "%")
+
+
+if volatility_rounded > 3:
+    print("⚠️ Risk Level: High")
+elif volatility_rounded > 1:
+    print("📈 Risk Level: Medium")
+else:
+    print("✅ Risk Level: Low")
+
+
+
+
+
+# Add Maximum Daily Gain and Loss
+max_gain = data["Daily Return"].max() * 100
+max_loss = data["Daily Return"].min() * 100
+
+print("Maximum Daily Gain:", round(max_gain, 2), "%")
+print("Maximum Daily Loss:", round(max_loss, 2), "%")
+
+
+# Add Sharpe Ratio (Risk vs Return Analysis)
+
+
+sharpe_ratio = (
+    data["Daily Return"].mean() /
+    data["Daily Return"].std()
+)
+
+sharpe_ratio = round(sharpe_ratio, 2)
+print("Sharpe Ratio:", sharpe_ratio)
+
+
+
+if sharpe_ratio > 1:
+    print(" Excellent Risk-Adjusted Return")
+elif sharpe_ratio > 0.5:
+    print(" Good Risk-Adjusted Return")
+elif sharpe_ratio > 0:
+    print(" Average Risk-Adjusted Return")
+else:
+    print(" Poor Risk-Adjusted Return")
+
+
+
+
+
+
+
+
+
+
+annual_return = data["Daily Return"].mean() * 252 * 100
+annual_return = round(annual_return, 2)
+
+print("Annualized Return:", annual_return, "%")
+
+if annual_return > 15:
+    print(" Excellent Long-Term Return")
+elif annual_return > 5:
+    print(" Good Long-Term Return")
+else:
+    print(" Low Long-Term Return")
+
+# add Dividend Information
+
+dividends = stock.dividends
+
+if dividends.empty:
+    print(" Dividend Information: No recent dividends")
+else:
+    latest_dividend = dividends.iloc[-1]
+    print(" Latest Dividend:", round(latest_dividend, 2))
